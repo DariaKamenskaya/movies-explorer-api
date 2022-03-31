@@ -6,6 +6,8 @@ const WrongDataError = require('../errors/wrong-data-err');
 const WrongTokenError = require('../errors/wrong-token-err');
 const ExistingEmailError = require('../errors/existing-email-err');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 const saltPassword = 10;
 
 exports.getUserMe = async (req, res, next) => {
@@ -99,7 +101,11 @@ exports.login = (req, res, next) => {
   return user.findUserByCredentials(email, password)
     .then((existingUser) => {
       // создадим токен
-      const token = jwt.sign({ _id: existingUser._id }, 'some-secret-key', { expiresIn: '7d' });
+      const token = jwt.sign(
+        { _id: existingUser._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        { expiresIn: '7d' },
+      );
       // вернём токен
       res.send({ token });
     })

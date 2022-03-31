@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+require('dotenv').config();
+const cors = require('cors');
 const { errors } = require('celebrate');
 const { routes } = require('./routes');
 const {
@@ -17,12 +19,17 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
+// добавляем env-переменные из файла в process.env
+require('dotenv').config();
+
 async function main() {
   // подключаемся к серверу mongo
   await mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
+
+  app.use(cors());
 
   // подключаем логгер запросов
   app.use(requestLogger);
