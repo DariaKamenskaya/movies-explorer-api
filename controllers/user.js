@@ -33,8 +33,8 @@ exports.createUser = async (req, res, next) => {
     name, email, password,
   } = req.body;
   // проверка что введен пароль и логин
-  if (!email || !password) {
-    next(new WrongDataError('Поля "email" и "password" должно быть заполнены'));
+  if (!email || !password || !name) {
+    next(new WrongDataError('Поля "email", "name" и "password" должно быть заполнены'));
   }
   // хешируем пароль
   bcrypt.hash(password, saltPassword)

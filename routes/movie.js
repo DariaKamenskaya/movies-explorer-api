@@ -1,27 +1,21 @@
 const express = require('express');
 
 const {
-  getCards,
-  deleteCardById,
-  createCard,
-  putCardlike,
-  deleteCardLike,
+  getMovies,
+  deleteMovieById,
+  createMovie,
 } = require('../controllers/movie');
 const {
-  validateCardId,
-  createCardValidation,
+  validateMovieId,
+  createMovieValidation,
 } = require('../middlewares/validatons');
 
 const moviesRoutes = express.Router();
 
-moviesRoutes.get('/', getCards);
+moviesRoutes.get('/', getMovies);
 
-moviesRoutes.delete('/:cardId', validateCardId, deleteCardById);
+moviesRoutes.post('/', createMovieValidation, express.json(), createMovie);
 
-moviesRoutes.put('/:cardId/likes', validateCardId, putCardlike);
-
-moviesRoutes.delete('/:cardId/likes', validateCardId, deleteCardLike);
-
-moviesRoutes.post('/', createCardValidation, express.json(), createCard);
+moviesRoutes.delete('/:movieId', validateMovieId, deleteMovieById);
 
 exports.moviesRoutes = moviesRoutes;

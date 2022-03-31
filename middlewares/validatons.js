@@ -20,6 +20,7 @@ exports.signUpValidation = celebrate({
     name: Joi.string().min(2).max(30).messages({
       'string.min': 'Минимальная длина поля "name" - 2',
       'string.max': 'Максимальная длина поля "name" - 30',
+      'any.required': 'Поле "name" должно быть заполнено',
     }),
   }),
 });
@@ -37,7 +38,7 @@ exports.patchUserMeValidation = celebrate({
       .messages({
         'string.min': 'Минимальная длина поля "name" - 2',
         'string.max': 'Максимальная длина поля "name" - 30',
-        'any.required': 'Поле "password" должно быть заполнено',
+        'any.required': 'Поле "name" должно быть заполнено',
       }),
     email: Joi.string().required().custom((value, helpers) => {
       if (validator.isEmail(value)) {
@@ -50,9 +51,9 @@ exports.patchUserMeValidation = celebrate({
   }),
 });
 
-exports.validateCardId = celebrate({
+exports.validateMovieId = celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().required().custom((value, helpers) => {
+    movieId: Joi.string().required().custom((value, helpers) => {
       if (ObjectId.isValid(value)) {
         return value;
       }
@@ -61,7 +62,7 @@ exports.validateCardId = celebrate({
   }),
 });
 
-exports.createCardValidation = celebrate({
+exports.createMovieValidation = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30)
       .messages({
