@@ -15,7 +15,7 @@ const {
 } = require('./middlewares/validatons');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 // Слушаем 3000 порт
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, NODE_ENV, DB_PROD } = process.env;
 
 const app = express();
 
@@ -24,7 +24,7 @@ require('dotenv').config();
 
 async function main() {
   // подключаемся к серверу mongo
-  await mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
+  await mongoose.connect(NODE_ENV === 'production' ? DB_PROD : 'mongodb://localhost:27017/bitfilmsdb', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
