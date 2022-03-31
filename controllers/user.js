@@ -74,7 +74,7 @@ exports.patchUserMe = async (req, res, next) => {
     const { name, email } = req.body;
     const opts = { new: true, runValidators: true };
     if (!name || !email) {
-      throw new WrongDataError('Поля "name" и "about" должно быть заполнены');
+      throw new WrongDataError('Поля "name" и "email" должно быть заполнены');
     } else {
       const ownerId = req.user._id;
       const userPatchMe = await user.findByIdAndUpdate(ownerId, { name, email }, opts);
@@ -87,6 +87,10 @@ exports.patchUserMe = async (req, res, next) => {
   } catch (err) {
     if (err.name === 'ValidationError') {
       next(new WrongDataError('Некорректные данные'));
+    }
+    if (err.code === 11000) {
+      // ошибка: пользователь пытается зарегистрироваться по уже существующему в базе email
+      next(new ExistingEmailError('Данный email уже существует в базе данных'));
     } else {
       next(err);
     }
