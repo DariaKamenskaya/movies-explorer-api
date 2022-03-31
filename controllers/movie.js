@@ -14,11 +14,11 @@ exports.getMovies = async (req, res, next) => {
 
 exports.deleteMovieById = (req, res, next) => {
   const ownerId = req.user._id; // идентификатор текущего пользователя
-  movie.findById(req.params.movieId)
-    .orFail(() => new NotFoundError('Нет карточки по заданному id'))
+  movie.findById(req.params.userMovieId)
+    .orFail(() => new NotFoundError('Нет карточки с фильмом по заданному id'))
     .then((userMovie) => {
       if (!userMovie.owner.equals(ownerId)) {
-        return next(new DeleteCardError('Чужая карточка не может быть удалена'));
+        return next(new DeleteCardError('Чужая карточка с фильмом не может быть удалена'));
       }
       return userMovie.remove()
         .then(() => res.status(200).send(userMovie));
@@ -35,7 +35,7 @@ exports.createMovie = async (req, res, next) => {
       year,
       description,
       image,
-      trailer,
+      trailerLink,
       nameRU,
       nameEN,
       thumbnail,
@@ -46,11 +46,11 @@ exports.createMovie = async (req, res, next) => {
       !country || !director
       || !duration || !year
       || !description || !image
-      || !trailer || !nameRU
+      || !trailerLink || !nameRU
       || !nameEN || !thumbnail
       || !movieId
     ) {
-      throw new WrongDataError('Поля "country", "director", "duration", "year", "description", "image", "trailer", "nameRU", "nameEN", "movieId" и "thumbnail" должны быть заполнены');
+      throw new WrongDataError('Поля "country", "director", "duration", "year", "description", "image", "trailerLink", "nameRU", "nameEN", "movieId" и "thumbnail" должны быть заполнены');
     } else {
       const movieNew = await movie.create({
         country,
@@ -59,7 +59,7 @@ exports.createMovie = async (req, res, next) => {
         year,
         description,
         image,
-        trailer,
+        trailerLink,
         nameRU,
         nameEN,
         thumbnail,

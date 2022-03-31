@@ -51,9 +51,9 @@ exports.patchUserMeValidation = celebrate({
   }),
 });
 
-exports.validateMovieId = celebrate({
+exports.validateUserMovieId = celebrate({
   params: Joi.object().keys({
-    movieId: Joi.string().required().custom((value, helpers) => {
+    userMovieId: Joi.string().required().custom((value, helpers) => {
       if (ObjectId.isValid(value)) {
         return value;
       }
@@ -64,18 +64,56 @@ exports.validateMovieId = celebrate({
 
 exports.createMovieValidation = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30)
+    country: Joi.string().required()
       .messages({
-        'string.min': 'Минимальная длина поля "name" - 2',
-        'string.max': 'Максимальная длина поля "name" - 30',
-        'any.required': 'Поле "password" должно быть заполнено',
+        'any.required': 'Поле "country" должно быть заполнено',
       }),
-    link: Joi.string().required().custom((value, helpers) => {
+    director: Joi.string().required()
+      .messages({
+        'any.required': 'Поле "director" должно быть заполнено',
+      }),
+    duration: Joi.number().required()
+      .messages({
+        'any.required': 'Поле "duration" должно быть заполнено',
+      }),
+    year: Joi.number().required()
+      .messages({
+        'any.required': 'Поле "year" должно быть заполнено',
+      }),
+    description: Joi.string().required()
+      .messages({
+        'any.required': 'Поле "description" должно быть заполнено',
+      }),
+    image: Joi.string().required().custom((value, helpers) => {
       if (validator.isURL(value)) {
         return value;
       }
-      return helpers.message('Невалидная ссылка');
+      return helpers.message('Невалидная ссылка для поля "image"');
     }),
+    trailerLink: Joi.string().required().custom((value, helpers) => {
+      if (validator.isURL(value)) {
+        return value;
+      }
+      return helpers.message('Невалидная ссылка для поля "trailerLink"');
+    }),
+    thumbnail: Joi.string().required().custom((value, helpers) => {
+      if (validator.isURL(value)) {
+        return value;
+      }
+      return helpers.message('Невалидная ссылка для поля "thumbnail"');
+    }),
+    movieId: Joi.number().required()
+      .messages({
+        'any.required': 'Поле "year" должно быть заполнено',
+      }),
+    nameRU: Joi.string().required()
+      .messages({
+        'any.required': 'Поле "nameRU" должно быть заполнено',
+      }),
+    nameEN: Joi.string().required()
+      .messages({
+        'any.required': 'Поле "nameEN" должно быть заполнено',
+      }),
   }),
 });
 
