@@ -11,6 +11,7 @@ const {
   signUpValidation,
   signInValidation,
 } = require('./middlewares/validatons');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
 
@@ -23,6 +24,9 @@ async function main() {
     useUnifiedTopology: true,
   });
 
+  // подключаем логгер запросов
+  app.use(requestLogger);
+
   // роуты, не требующие авторизации - регистрация и логин
   app.post('/signup', express.json(), signUpValidation, createUser);
   app.post('/signin', express.json(), signInValidation, login);
@@ -32,6 +36,9 @@ async function main() {
 
   // роуты, которым авторизация нужна
   app.use(routes);
+
+  // подключаем логгер ошибок
+  app.use(errorLogger);
 
   // обработчик ошибок celebrate
   app.use(errors());
