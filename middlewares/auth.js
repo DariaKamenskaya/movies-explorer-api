@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
   const { authorization } = req.headers;
   // убеждаемся, что он есть или начинается с Bearer
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    throw new WrongTokenError('Ошибка авторизации: токен не начинается с Bearer');
+    throw new WrongTokenError('Ошибка авторизации: неправильная почта или логин');
   }
   // извлечём токен
   const token = authorization.replace('Bearer ', '');
