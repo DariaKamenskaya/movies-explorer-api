@@ -19,6 +19,7 @@ const routes = express.Router();
 
 const NotFoundError = require('../errors/not-found-err');
 
+// роуты, не требующие авторизации - регистрация и логин
 routes.post('/signup', express.json(), signUpValidation, createUser);
 routes.post('/signin', express.json(), signInValidation, login);
 

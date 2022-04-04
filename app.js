@@ -4,16 +4,7 @@ require('dotenv').config();
 const cors = require('cors');
 const { errors } = require('celebrate');
 const { routes } = require('./routes');
-/* const {
-  login,
-  createUser,
-} = require('./controllers/user'); */
 const { limiter } = require('./middlewares/limiter');
-/* const auth = require('./middlewares/auth');
-const {
-  signUpValidation,
-  signInValidation,
-} = require('./middlewares/validatons'); */
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 // добавляем env-переменные из файла в process.env
@@ -37,13 +28,6 @@ async function main() {
 
   // подключаем лимитер для всех запросов
   app.use(limiter);
-
-  // роуты, не требующие авторизации - регистрация и логин
-  /* app.post('/signup', express.json(), signUpValidation, createUser);
-  app.post('/signin', express.json(), signInValidation, login);
-
-  // авторизация
-  app.use(auth); */
 
   // роуты, которым авторизация нужна
   app.use(routes);

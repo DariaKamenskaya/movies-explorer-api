@@ -34,10 +34,6 @@ exports.createUser = async (req, res, next) => {
   const {
     name, email, password,
   } = req.body;
-  // проверка что введен пароль и логин
-  /* if (!email || !password || !name) {
-    next(new WrongDataError('Поля "email", "name" и "password" должно быть заполнены'));
-  } */
   // хешируем пароль
   bcrypt.hash(password, saltPassword)
     .then((hash) => {
@@ -72,9 +68,6 @@ exports.patchUserMe = async (req, res, next) => {
   try {
     const { name, email } = req.body;
     const opts = { new: true, runValidators: true };
-    /* if (!name || !email) {
-      throw new WrongDataError('Поля "name" и "email" должно быть заполнены');
-    } else { */
     const ownerId = req.user._id;
     const userPatchMe = await user.findByIdAndUpdate(ownerId, { name, email }, opts);
     if (userPatchMe) {
@@ -82,7 +75,6 @@ exports.patchUserMe = async (req, res, next) => {
     } else {
       throw new NotFoundError('Переданы некорректные данные');
     }
-    // }
   } catch (err) {
     if (err.name === 'ValidationError') {
       next(new WrongDataError('Некорректные данные'));
