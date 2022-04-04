@@ -14,13 +14,13 @@ const {
   signInValidation,
 } = require('./middlewares/validatons');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+
+// добавляем env-переменные из файла в process.env
+require('dotenv').config();
 // Слушаем 3000 порт
 const { PORT = 3000, NODE_ENV, DB_PROD } = process.env;
 
 const app = express();
-
-// добавляем env-переменные из файла в process.env
-require('dotenv').config();
 
 async function main() {
   // подключаемся к серверу mongo
