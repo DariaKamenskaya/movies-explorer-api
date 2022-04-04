@@ -8,6 +8,7 @@ const {
   login,
   createUser,
 } = require('./controllers/user');
+const { limiter } = require('./middlewares/limiter');
 const auth = require('./middlewares/auth');
 const {
   signUpValidation,
@@ -33,6 +34,9 @@ async function main() {
 
   // подключаем логгер запросов
   app.use(requestLogger);
+
+  // подключаем лимитер для всех запросов
+  app.use(limiter);
 
   // роуты, не требующие авторизации - регистрация и логин
   app.post('/signup', express.json(), signUpValidation, createUser);

@@ -9,6 +9,6 @@ const userRoutes = express.Router();
 
 userRoutes.get('/me', getUserMe);
 
-userRoutes.patch('/me', patchUserMeValidation, express.json(), patchUserMe);
+userRoutes.patch('/me', express.json(), patchUserMeValidation, patchUserMe);
 
 exports.userRoutes = userRoutes;
