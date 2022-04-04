@@ -57,8 +57,7 @@ exports.createUser = async (req, res, next) => {
         .catch((err) => {
           if (err.name === 'ValidationError') {
             next(new WrongDataError('Некорректные данные'));
-          }
-          if (err.code === 11000) {
+          } else if (err.code === 11000) {
             // ошибка: пользователь пытается зарегистрироваться по уже существующему в базе email
             next(new ExistingEmailError('Данный email уже существует в базе данных'));
           } else {
@@ -87,8 +86,7 @@ exports.patchUserMe = async (req, res, next) => {
   } catch (err) {
     if (err.name === 'ValidationError') {
       next(new WrongDataError('Некорректные данные'));
-    }
-    if (err.code === 11000) {
+    } else if (err.code === 11000) {
       // ошибка: пользователь пытается зарегистрироваться по уже существующему в базе email
       next(new ExistingEmailError('Данный email уже существует в базе данных'));
     } else {
