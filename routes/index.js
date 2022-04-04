@@ -1,5 +1,16 @@
 const express = require('express');
 
+const {
+  login,
+  createUser,
+} = require('../controllers/user');
+
+const auth = require('../middlewares/auth');
+const {
+  signUpValidation,
+  signInValidation,
+} = require('../middlewares/validatons');
+
 const { userRoutes } = require('./user');
 
 const { moviesRoutes } = require('./movie');
@@ -7,6 +18,12 @@ const { moviesRoutes } = require('./movie');
 const routes = express.Router();
 
 const NotFoundError = require('../errors/not-found-err');
+
+routes.post('/signup', express.json(), signUpValidation, createUser);
+routes.post('/signin', express.json(), signInValidation, login);
+
+// авторизация
+routes.use(auth);
 
 routes.use('/users', userRoutes);
 routes.use('/movies', moviesRoutes);
