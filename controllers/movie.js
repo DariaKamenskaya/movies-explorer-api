@@ -42,7 +42,7 @@ exports.createMovie = async (req, res, next) => {
       movieId,
     } = req.body;
     const ownerId = req.user._id;
-    if (
+    /* if (
       !country || !director
       || !duration || !year
       || !description || !image
@@ -50,24 +50,25 @@ exports.createMovie = async (req, res, next) => {
       || !nameEN || !thumbnail
       || !movieId
     ) {
-      throw new WrongDataError('Поля "country", "director", "duration", "year", "description", "image", "trailerLink", "nameRU", "nameEN", "movieId" и "thumbnail" должны быть заполнены');
-    } else {
-      const movieNew = await movie.create({
-        country,
-        director,
-        duration,
-        year,
-        description,
-        image,
-        trailerLink,
-        nameRU,
-        nameEN,
-        thumbnail,
-        movieId,
-        owner: ownerId,
-      });
-      res.status(201).send({ data: movieNew });
-    }
+      throw new WrongDataError('Поля "country", "director", "duration", "year", "description",
+      "image", "trailerLink", "nameRU", "nameEN", "movieId" и "thumbnail" должны быть заполнены');
+    } else { */
+    const movieNew = await movie.create({
+      country,
+      director,
+      duration,
+      year,
+      description,
+      image,
+      trailerLink,
+      nameRU,
+      nameEN,
+      thumbnail,
+      movieId,
+      owner: ownerId,
+    });
+    res.status(201).send({ data: movieNew });
+    // }
   } catch (err) {
     if (err.name === 'ValidationError') {
       next(new WrongDataError('Некорректные данные'));
